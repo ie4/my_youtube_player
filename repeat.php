@@ -1,6 +1,14 @@
 <?php
-$v = $_GET["v"]; if(!$v) $v = "iIUgwCQz6ZU";
-?><html>
+if($_GET["pl"]){
+  $pl = $_GET["pl"];
+  $prms = "?listType=playlist&list=$pl";
+}
+if($_GET["v"]){
+  $v = $_GET["v"] ;
+  $prms = "$v?loop=1&playlist=$v";
+}
+?>
+<html>
 <head>
 <style type="text/css">
 body{
@@ -10,14 +18,15 @@ body{
 </style>
 </head>
 <body align=center>
-<iframe width="320" height="240" src="//www.youtube.com/embed/<?php print $v; ?>?loop=1&playlist=<?php print $v; ?>" frameborder="0" allowfullscreen></iframe>
-<!-- iframe width="320" height="240" src="//www.youtube.com/embed/<?php print $_GET["v"]; ?>?loop=1&playlist=3exsRhw3xt8" frameborder="0" allowfullscreen></iframe -->
+<iframe width="320" height="240" src="//www.youtube.com/embed/<?php print $prms; ?>" frameborder="0" allowfullscreen></iframe>
 <!--
-http://ie4.me/youtube.php?v=iIUgwCQz6ZU
-
+https://developers.google.com/youtube/iframe_api_reference?hl=ja
+https://developers.google.com/youtube/player_parameters?hl=ja
 -->
-<form action="youtube.php">
-<input type="text" name="v" value="<?php print $v; ?>"><input type="submit">
+<form action="repeat.php">
+<input type="text" name="v" value="<?php print $v; ?>" size="10">
+<input type="text" name="pl" value="<?php print $pl; ?>" size="12">
+<input type="submit">
 </form>
 </body>
 </html>
