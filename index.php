@@ -13,8 +13,8 @@ function openRepeatPlayer(){
   var videoId    = document.getElementById('video_id').value;
   var playlistId = document.getElementById('playlist_id').value;
   window.open('repeat.php?v='+videoId+'&pl='+playlistId, windowName, windowOption);
-  if(videoId)    addLocalStorage("videoId",videoId) ;
-  if(playlistId) addLocalStorage("playlistId",playlistId) ;
+  if(videoId)    addLocalStorage("video_id",videoId) ;
+  if(playlistId) addLocalStorage("playlist_id",playlistId) ;
 }
 function openVideoIdsGetPlayer(){
   var url = escape(document.getElementById('url').value);
@@ -38,21 +38,65 @@ function addLocalStorage(name,value){
   }
   localStorage.setItem(name,JSON.stringify(hash));
 }
-window.onload = function(){
-  var names = ['videoId','playlistId','url','search_query'];
-  var historyText = "";
+function delLocalStorage(name,value){
+  var hash = JSON.parse(localStorage.getItem(name));
+  delete hash[value] ;
+  localStorage.setItem(name,JSON.stringify(hash));
+}
+function anchorPlayFunction(name,value){
+  switch (name){
+    case 'video_id':
+      document.getElementById('video_id').value = value ;
+      document.getElementById('playlist_id').value = '' ;
+      openRepeatPlayer();
+      break;
+    case 'playlist_id':
+      document.getElementById('video_id').value = '' ;
+      document.getElementById('playlist_id').value = value ;
+      openRepeatPlayer();
+      break;
+    case 'url':
+      document.getElementById('url').value = value ;
+      openVideoIdsGetPlayer();
+      break;
+    case 'search_query':
+      document.getElementById('search_query').value = value ;
+      openSearchPlayer();
+      break;
+  }
+  createActionList();
+}
+function anchorDeleteFunction(name,value){
+  if(confirm('Are you sure delete this item ?\n\n' + name + ' : ' + value)){
+    delLocalStorage(name,value);
+    createActionList();
+  }
+}
+function createActionList(){
+  var actionList = document.getElementById('action_list') ;
+  if(actionList){ document.body.removeChild(actionList); }
+  var names = ['video_id','playlist_id','url','search_query'];
+  var historyText = '';
   for(var i=0; i < names.length; i++ ){
     var name = names[i];
     var list = JSON.parse(localStorage.getItem(name));
-    historyText += "========== " + name + "\n" ;
+    historyText += '========== ' + name + '<br />' ;
     for(var key in list){
-      historyText += key + " : " + list[key] + "\n" ;
+      playFunc = 'anchorPlayFunction(\'' + name + '\',\'' + key + '\')' ;
+      delFunc  = 'anchorDeleteFunction(\'' + name + '\',\'' + key + '\')' ;
+      histLink = '<a href="javascript:(function(){' + playFunc + ';return false;}());">' + key + '</a>' ;
+      dltLink  = '<a href="javascript:(function(){' + delFunc  + ';return false;}());">x</a>' ;
+      historyText += histLink + ' : ' + list[key] + ' times play ' + dltLink +  '<br />' ;
     }
   }
-  var pre = document.createElement( "pre" );
-  pre.style.cssText = "line-height:1.8em";
-  pre.innerHTML = historyText;
-  document.body.appendChild( pre );
+  var actionList = document.createElement( "div" );
+  actionList.id = 'action_list';
+  actionList.style.cssText = "line-height:1.8em";
+  actionList.innerHTML = historyText;
+  document.body.appendChild( actionList );
+}
+window.onload = function(){
+  createActionList();
 }
 </script>
 <form>
