@@ -14,6 +14,7 @@ if($_GET["v"]){
 body{
   margin:0px;
   background:#000;
+  color:#fff;
 }
 </style>
 </head>
@@ -21,7 +22,7 @@ body{
 <div id="player"></div>
 <script>
   var tag = document.createElement('script');
-  tag.src = "https://www.youtube.com/iframe_api";
+  tag.src = 'https://www.youtube.com/iframe_api';
   var firstScriptTag = document.getElementsByTagName('script')[0];
   firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
@@ -32,7 +33,8 @@ body{
       width: '320',
       events: {
         'onReady': onPlayerReady,
-        'onError': onError
+        'onError': onError,
+        'onStateChange': onPlayerStateChange
       }
     });
   }
@@ -43,16 +45,24 @@ body{
   function onError(event) {
     nextVideo();
   }
+  function onPlayerStateChange(event) {
+    var title = document.getElementById('title');
+    console.log(player.B.videoData.title) ;
+    title.innerText = player.B.videoData.title ;
+    title.style.display = 'block';
+  }
   function prevVideo() {
     player.previousVideo();
+    title.style.display = 'none';
   }
   function nextVideo() {
     player.nextVideo();
+    title.style.display = 'none';
   }
   function loopVideo() {
     list = player.getPlaylist();
-    document.getElementById("v").value = list[player.getPlaylistIndex()];
-    document.getElementById("pl").value = '';
+    document.getElementById('v').value = list[player.getPlaylistIndex()];
+    document.getElementById('pl').value = '';
     document.forms[0].submit();
   }
 </script>
@@ -64,5 +74,6 @@ body{
 <input type="submit">
 <a href="javascript:void(0);" onClick="nextVideo()" style="color:#fff;text-decoration:none;">&gt;&gt;</a>
 </form>
+<div id="title" style="display:none;padding:0 0 10px;"></div>
 </body>
 </html>
