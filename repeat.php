@@ -31,13 +31,17 @@ body{
       height: '240',
       width: '320',
       events: {
-        'onReady': onPlayerReady
+        'onReady': onPlayerReady,
+        'onError': onError
       }
     });
   }
   function onPlayerReady(event) {
     event.target.loadPlaylist(<?php echo ($pl) ? "{list:'$pl'}" : "'$v'" ; ?>);
     event.target.setLoop(true);
+  }
+  function onError(event) {
+    nextVideo();
   }
   function prevVideo() {
     player.previousVideo();
