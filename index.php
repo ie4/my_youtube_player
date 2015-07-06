@@ -83,9 +83,8 @@ function anchorDeleteFunction(name,value){
 }
 function createActionList(){
   var actionList = document.getElementById('action_list') ;
-  if(actionList){ document.body.removeChild(actionList); }
   var names = ['video_id','playlist_id','url','search_query'];
-  var historyText = '';
+  var historyText = '<h2>play history</h2>';
   for(var i=0; i < names.length; i++ ){
     var name = names[i];
     var hist = getItem(name);
@@ -101,11 +100,7 @@ function createActionList(){
       }
     }
   }
-  var actionList = document.createElement( "div" );
-  actionList.id = 'action_list';
-  actionList.style.cssText = "line-height:1.8em";
   actionList.innerHTML = historyText;
-  document.body.appendChild( actionList );
 }
 function getItem(name){
   // localStorage.getItem(name)
@@ -167,6 +162,9 @@ window.onload = function(){
   createActionList();
 }
 </script>
+<h1>My Youtube Player</h1>
+
+<h2>plyer opener</h2>
 <form onSubmit="return false;">
 video_id <input type="text" name="video_id" id="video_id" value="<?php echo $v; ?>" size="10">
 playlist_id <input type="text" name="playlist_id" id="playlist_id" value="<?php echo $pl; ?>" size="20">
@@ -180,9 +178,30 @@ url <input type="text" name="url" id="url" value="<?php echo $url; ?>" size="50"
 search word <input type="text" name="search_query" id="search_query" value="<?php echo $query; ?>" size="30">
 <button value="youtube" onClick="openSearchPlayer()">search video player open</button>
 </form>
+
+<h2>config</h2>
 <form onSubmit="return false;" style="margin:10px 0px;">
 your uuid: <input type="text" id="uuid_box" size="35">
 <input type="submit" value="uuid update" onClick="saveUUID()">
 </form>
+<div id="action_list" style="line-height: 1.8em;"></div>
+<div style="line-height: 1.8em;">
+<h2>sample links</h2>
+========== video_id<br>
+<a href="javascript:(function(){anchorPlayFunction('video_id','5zs1ClgqhLw');return false;}());">5zs1ClgqhLw</a><br>
+========== playlist_id<br>
+<a href="javascript:(function(){anchorPlayFunction('playlist_id','PL4DIwTaDEThGTKnIdVwO_KGSqWpSuxWG6');return false;}());">PL4DIwTaDEThGTKnIdVwO_KGSqWpSuxWG6</a><br>
+========== url<br>
+<a href="javascript:(function(){anchorPlayFunction('url','https://www.youtube.com/results?search_query=ne-yo');return false;}());">https://www.youtube.com/results?search_query=ne-yo</a><br>
+<a href="javascript:(function(){anchorPlayFunction('url','http://bmr.jp/feed');return false;}());">http://bmr.jp/feed</a><br>
+========== search_query<br>
+<a href="javascript:(function(){anchorPlayFunction('search_query','little mix');return false;}());">little mix</a><br>
+<a href="javascript:(function(){anchorPlayFunction('search_query','craig david');return false;}());">craig david</a><br>
+<a href="javascript:(function(){anchorPlayFunction('search_query','usher');return false;}());">usher</a><br>
+</div>
+<div style="line-height: 1.8em;">
+<h2>author</h2>
+ie4 <a href="https://github.com/ie4" target="_blank">GitHub</a>
+</div>
 </body>
 </html>

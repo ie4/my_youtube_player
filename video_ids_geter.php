@@ -7,7 +7,7 @@ if($_GET["url"]){
 if(preg_match("/https?:\/\/www.youtube.com/",$url)){
   exec("ruby -r open-uri -r nokogiri -e \"Nokogiri::HTML(open('$url')).css('.yt-lockup-video').collect{|elm| puts elm.attribute('data-context-item-id').value}\"",$list);
 }else{
-  exec("ruby -r open-uri -e 'open(\"$url\").read.scan(%r(https?://www\.youtube\.com/embed/([^\"]+))) {|m| puts m}'",$list);
+  exec("ruby -r open-uri -e 'open(\"$url\").read.scan(%r(https?://www\.youtube\.com/embed/([^\"\?]+))) {|m| puts m}'",$list);
 }
 $vlist = implode(",",array_map(function($vid){return "'$vid'";},$list));
 ?>
