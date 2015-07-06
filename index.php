@@ -142,6 +142,7 @@ function checkUUID(){
     uuid = createUUID();
     localStorage.setItem("uuid",uuid);
   }
+  document.getElementById("uuid_box").value = uuid ;
 }
 function createUUID() {
   var uuid = "", i, random;
@@ -153,6 +154,13 @@ function createUUID() {
     uuid += (i == 12 ? 4 : (i == 16 ? (random & 3 | 8) : random)).toString(16);
   }
   return uuid;
+}
+function saveUUID() {
+  uuid = document.getElementById("uuid_box").value ;
+  if(uuid){
+    localStorage.setItem("uuid",uuid);
+    createActionList();
+  }
 }
 window.onload = function(){
   checkUUID();
@@ -171,6 +179,10 @@ url <input type="text" name="url" id="url" value="<?php echo $url; ?>" size="50"
 <form onSubmit="return false;">
 search word <input type="text" name="search_query" id="search_query" value="<?php echo $query; ?>" size="30">
 <button value="youtube" onClick="openSearchPlayer()">search video player open</button>
+</form>
+<form onSubmit="return false;" style="margin:10px 0px;">
+your uuid: <input type="text" id="uuid_box" size="35">
+<input type="submit" value="uuid update" onClick="saveUUID()">
 </form>
 </body>
 </html>
