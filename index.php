@@ -112,7 +112,7 @@ function getItem(name){
   var msg;
   $.ajax({
     type: "POST",
-    url: "json_storage.php",
+    url: "api/json_storage.php",
     data: "uuid="+uuid+"&name="+name,
     async: false,
     success: function(res){
@@ -127,7 +127,7 @@ function setItem(name,data){
   var msg;
   $.ajax({
     type: "POST",
-    url: "json_storage.php",
+    url: "api/json_storage.php",
     data: "uuid="+uuid+"&name="+name+"&data="+data,
     async: false,
     success: function(res){

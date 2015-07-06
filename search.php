@@ -1,15 +1,9 @@
 <?php
 // https://developers.google.com/youtube/iframe_api_reference?hl=ja
 // https://developers.google.com/youtube/player_parameters?hl=ja
-if($_GET["url"]){
-  $url = $_GET["url"];
+if($_GET["q"]){
+  $q = $_GET["q"];
 }
-if(preg_match("/https?:\/\/www.youtube.com/",$url)){
-  exec("ruby -r open-uri -r nokogiri -e \"Nokogiri::HTML(open('$url')).css('.yt-lockup-video').collect{|elm| puts elm.attribute('data-context-item-id').value}\"",$list);
-}else{
-  exec("ruby -r open-uri -e 'open(\"$url\").read.scan(%r(https?://www\.youtube\.com/embed/([^\"]+))) {|m| puts m}'",$list);
-}
-$vlist = implode(",",array_map(function($vid){return "'$vid'";},$list));
 ?>
 <html>
 <head>
@@ -25,10 +19,16 @@ body{
 <div id="player"></div>
 <script src="js/base.js"></script>
 <script>
-function onPlayerReady(event) {
-  event.target.loadPlaylist([<?php echo $vlist; ?>]);
-  event.target.setLoop(true);
-}
+  function onPlayerReady(event) {
+    event.target.loadPlaylist({listType:'search',list:'<?php echo $q; ?>'});
+    event.target.setLoop(true);
+  }
+  function loopVideo() {
+    list = player.getPlaylist();
+    document.getElementById("v").value = list[player.getPlaylistIndex()];
+    document.getElementById("pl").value = '';
+    document.forms[0].submit();
+  }
 </script>
 <form action="repeat.php">
 <a href="javascript:void(0);" onClick="prevVideo()" style="color:#fff;text-decoration:none;">&lt;&lt;</a>
